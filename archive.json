@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-07-17T01:50:54.911255+00:00",
+  "timestamp": "2025-08-14T01:46:06.732519+00:00",
   "repo": "nedmsmith/draft-cds-rats-intel-corim-profile",
   "labels": [
     {
@@ -62,7 +62,7 @@
       "labels": [],
       "body": "Hi @nedmsmith . I am Ding from [Confidential Containers](https://github.com/confidential-containers) which aiming to provide cloud native way to leverage TEE ability for containerized workload. Now I am working on the reference value publishment and consumption of the components running inside TEE (like kernel, guest firmware, ..., e.g. `mr_td`, `rtmr`s for TDX, etc.).\r\n\r\nTwo aims from my side\r\n- Use a standard format as carrier of reference values. CoRIM is from IETF RATS and I'd like to use it first.\r\n- The format should be extensible for different platforms, aiming for SGX/TDX/SNP/CCA/...\r\n\r\nI have read the slides about [CoRIM based attestation framework](https://github.com/CCC-Attestation/meetings/blob/main/materials/ShanweiCen_CORIM_based_Attestation_Framework.pdf) which follows the `measurement-values-map-extension` fields defined in this repo. This could help SGX to give reference values for fields like `MRENCLAVE`. \r\n\r\nMy question is how to apply this standard on TDX and other platforms? Is there anything I ignored or do you have any plan?\r\n\r\nThanks a lot!",
       "createdAt": "2024-03-04T09:18:44Z",
-      "updatedAt": "2025-01-17T16:09:41Z",
+      "updatedAt": "2025-08-12T17:52:13Z",
       "closedAt": null,
       "comments": [
         {
@@ -99,6 +99,13 @@
           "body": "> Thanks very much. Do you have any plan inside Intel to publish reference values of TDX stack using CoRIM?\n\nYes. That's typically coordinated with product releases.",
           "createdAt": "2025-01-17T16:09:40Z",
           "updatedAt": "2025-01-17T16:09:40Z"
+        },
+        {
+          "author": "yogeshbdeshpande",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@Xynnn007 : We now have working Reference Values for Intel-TDX using Open Source Project Veraison\n\nplease see:\n\nhttps://github.com/veraison/corim and in particular:\nhttps://github.com/veraison/corim/tree/main/comid/tdx-profile\n\n",
+          "createdAt": "2025-08-12T17:51:12Z",
+          "updatedAt": "2025-08-12T17:52:13Z"
         }
       ]
     },
@@ -306,6 +313,22 @@
           "updatedAt": "2025-05-13T19:55:19Z"
         }
       ]
+    },
+    {
+      "number": 73,
+      "id": "I_kwDOJvkHy87Fmyt4",
+      "title": "Need to document, CMW Collection Semantics for TDX Evidence",
+      "url": "https://github.com/nedmsmith/draft-cds-rats-intel-corim-profile/issues/73",
+      "state": "OPEN",
+      "author": "yogeshbdeshpande",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The existing version-5 of this specification vaguely touches on the subject in Section 6.1 that\n\nThe CBOR for various Concise Evidences, like TDX-SEAM, TDX QE and TDX PCK, can be bundled into a CMW Collection  or an EAT token.\n\nHowever, we need to clearly document:\n\n1. MediaType of Content Format or a Tag associated with EACH CBOR Payload for the above.\n2. How the Security for each of the CBOR be Managed..? \n3. For 2, one possible Option could be to sign the Entire CMW Collection by a Lead Attester. The other alternative is to crypto graphically link the multiple elements of collection to provide the security.\n\n\nIn absence of any such guidance, the individual implementer's may end up coming with their own schemes, thus defeating the purpose of standardisation.\n\nRequire clear CDDL schema that defines:\n\n1. How to stash the Evidence into a Collection\n2. Security of the collection\n\n@jdbeaney, @nedmsmith Please clarify and add if I have missed any aspect!!!",
+      "createdAt": "2025-08-12T17:58:23Z",
+      "updatedAt": "2025-08-12T17:59:19Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
