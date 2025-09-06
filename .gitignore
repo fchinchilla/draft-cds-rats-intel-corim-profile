@@ -28,3 +28,6 @@ intel-profile-export.cddl
 *.cddlx
 cddl/ip-export.cddl
 *.cddl.bak
+*.cbor
+*.pretty
+.mailmap
