@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-08-14T01:46:06.732519+00:00",
+  "timestamp": "2025-09-07T01:38:25.765159+00:00",
   "repo": "nedmsmith/draft-cds-rats-intel-corim-profile",
   "labels": [
     {
@@ -3764,6 +3764,32 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 74,
+      "id": "PR_kwDOJvkHy86nOErb",
+      "title": "Nms/dgb",
+      "url": "https://github.com/nedmsmith/draft-cds-rats-intel-corim-profile/pull/74",
+      "state": "OPEN",
+      "author": "nedmsmith",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-09-06T21:12:10Z",
+      "updatedAt": "2025-09-06T21:12:10Z",
+      "baseRepository": "nedmsmith/draft-cds-rats-intel-corim-profile",
+      "baseRefName": "main",
+      "baseRefOid": "b164507ed9b558ae008988c0a6ec580da9db1f4f",
+      "headRepository": "nedmsmith/draft-cds-rats-intel-corim-profile",
+      "headRefName": "nms/dgb",
+      "headRefOid": "b417f503dcc64d7a662a3687793cc0f4395971a9",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
