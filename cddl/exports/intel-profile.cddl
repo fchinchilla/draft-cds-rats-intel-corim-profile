@@ -144,7 +144,6 @@ $$measurement-values-map-extension //= (
 )
 $tee-digest-type /= digest ; see corim
 $tee-digest-type /= digests-type ; see corim
-$tee-digest-type /= set-digest-type
 $tee-digest-type /= tagged-exp-digest-member
 $tee-digest-type /= tagged-exp-digest-not-member
 
