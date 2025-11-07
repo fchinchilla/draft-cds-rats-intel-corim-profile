@@ -1,0 +1,3 @@
+---
+BUNDLE_BIN: "lib/.gems/bin"
+BUNDLE_PATH: "lib/.gems"
