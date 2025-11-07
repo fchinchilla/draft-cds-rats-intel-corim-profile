@@ -1,0 +1,219 @@
+; This cddl file depends on these cddl files: coev.cddl corim-autogen.cddl
+
+tagged-numeric-gt = #6.60010( [
+    op.gt .within numeric-operators,
+    reference-value: numeric-type ] )
+tagged-numeric-ge = #6.60010( [
+    op.ge .within numeric-operators,
+    reference-value: numeric-type ] )
+tagged-numeric-lt = #6.60010( [
+    op.lt .within numeric-operators,
+    reference-value: numeric-type ] )
+tagged-numeric-le = #6.60010( [
+    op.le .within numeric-operators,
+    reference-value: numeric-type ] )
+
+numeric-type = integer / unsigned / float
+numeric-operators /= op.gt
+numeric-operators /= op.ge 
+numeric-operators /= op.lt
+numeric-operators /= op.le
+numeric-expression = [ numeric-operators, numeric-type ]
+tagged-numeric-expression = #6.60010(numeric-expression)
+
+Etime = #6.1001(etime-detailed)
+
+etime-framework = {
+  uint => any ; at least one base time
+  * (nint/text) => any ; elective supplementary information
+  * uint => any ; critical supplementary information
+}
+
+etime-detailed = ({
+  $$ETIME-BASETIME
+  ClockQuality-group
+  * $$ETIME-ELECTIVE
+  * $$ETIME-CRITICAL
+  * ((nint/text) .feature "etime-elective-extension") => any
+  * (uint .feature "etime-critical-extension") => any
+}) .within etime-framework
+
+$$ETIME-BASETIME //= (1: ~time)
+$$ETIME-BASETIME //= (4: ~decfrac)
+$$ETIME-BASETIME //= (5: ~bigfloat)
+$$ETIME-ELECTIVE //= (-3: uint)
+$$ETIME-ELECTIVE //= (-6: uint)
+$$ETIME-ELECTIVE //= (-9: uint)
+$$ETIME-ELECTIVE //= (-12: uint)
+$$ETIME-ELECTIVE //= (-15: uint)
+$$ETIME-ELECTIVE //= (-18: uint)
+$$ETIME-ELECTIVE //= (-1 => $ETIME-TIMESCALE)
+$$ETIME-ELECTIVE //= (-13 => $ETIME-TIMESCALE)
+$$ETIME-CRITICAL //= (13 => $ETIME-TIMESCALE)
+$ETIME-TIMESCALE /= &(etime-utc: 0)
+$ETIME-TIMESCALE /= &(etime-tai: 1)
+
+ClockQuality-group = (
+  ? &(ClockClass: -2) => uint .size 1 ; PTP/RFC8575
+  ? &(ClockAccuracy: -4) => uint .size 1 ; PTP/RFC8575
+  ? &(OffsetScaledLogVariance: -5) => uint .size 2 ; PTP/RFC8575
+  ? &(Uncertainty: -7) => ~time/~duration
+  ? &(Guarantee: -8) => ~time/~duration
+)
+
+Duration = #6.1002(etime-detailed)
+
+simple-Period = #6.1003([
+  start: ~Etime / null
+  end: ~Etime / null
+  ? duration: ~Duration
+])
+
+Period = #6.1003([
+  (start: ~Etime,
+   ((end: ~Etime) //
+    (end: null,
+     duration: ~Duration))) //
+  (start: null,
+   end: ~Etime,
+   duration: ~Duration)
+])
+
+etime = #6.1001({* (int/tstr) => any})
+duration = #6.1002({* (int/tstr) => any})
+period = #6.1003([~etime/null, ~etime/null, ?~duration])
+
+set-operators /= op.mem 
+set-operators /= op.nmem
+set-type<T> = [ * T ]
+
+set-digest-type /= set-type<digest>
+set-digest-expression = [ set-operators, set-digest-type ]
+tagged-set-digest-expression = #6.60020( set-digest-expression )
+
+set-tstr-type /= set-type<tstr>
+set-tstr-expression = [ set-operators, set-tstr-type ]
+tagged-set-tstr-expression = #6.60021( set-tstr-expression )
+
+tagged-exp-digest-member = #6.60020([
+    op.mem .within set-operators, set-digest-type ])
+    
+tagged-exp-digest-not-member = #6.60020([
+    op.nmem .within set-operators, set-digest-type ])
+
+tagged-exp-tstr-member = #6.60021([
+    op.mem .within set-operators, set-tstr-type ])
+    
+tagged-exp-tstr-not-member = #6.60021([
+    op.nmem .within set-operators, set-tstr-type ])
+
+$masked-value-type /= ~tagged-bytes
+$masked-value-type /= $raw-value-type-choice
+
+$$measurement-values-map-extension //= (
+  &(tee.advisory-ids: -89) => $tee-advisory-ids-type
+)
+$tee-advisory-ids-type /= set-tstr-type
+$tee-advisory-ids-type /= tagged-exp-tstr-not-member
+$tee-advisory-ids-type /= tagged-exp-tstr-member
+
+$$measurement-values-map-extension //= (
+  &(tee.attributes: -82) => $tee-attributes-type
+)
+$tee-attributes-type /= $masked-value-type
+
+$$measurement-values-map-extension //= (
+  &(tee.cryptokeys: -91) => [ + $tee-cryptokey-type ]
+)
+$tee-cryptokey-type /= $crypto-key-type-choice
+
+$$measurement-values-map-extension //= (
+  &(tee.tcbdate: -72) => $tee-date-type
+)
+$tee-date-type /= ~tdate
+$tee-date-type /= tdate
+$tee-date-type /= time
+$tee-date-type /= etime ; RFC9581
+$tee-date-type /= period ; RFC9581
+
+$$measurement-values-map-extension //= (
+  &(tee.mrtee: -83) => $tee-digest-type
+)
+$$measurement-values-map-extension //= (
+  &(tee.mrsigner: -84) => $tee-digest-type
+)
+$tee-digest-type /= digest ; see corim
+$tee-digest-type /= digests-type ; see corim
+$tee-digest-type /= tagged-exp-digest-member
+$tee-digest-type /= tagged-exp-digest-not-member
+
+$$measurement-values-map-extension //= (
+  &(tee.isvprodid: -85) => $tee-isvprodid-type
+)
+$tee-isvprodid-type /= uint
+$tee-isvprodid-type /= bstr
+
+$$measurement-values-map-extension //= (
+  &(tee.miscselect: -81) => $tee-miscselect-type
+)
+$tee-miscselect-type /= $masked-value-type
+
+$$measurement-values-map-extension //= (
+  &(tee.model: -71) => $tee-model-type
+)
+$tee-model-type /= tstr
+
+op.eq=0
+op.gt=1
+op.ge=2
+op.lt=3
+op.le=4
+op.mem=6
+op.nmem=7
+
+$$measurement-values-map-extension //= (
+  &(tee.pceid: -80) => $tee-pceid-type
+)
+$tee-pceid-type /= tstr
+$tee-pceid-type /= uint
+
+$$measurement-values-map-extension //= (
+  &(tee.isvsvn: -73) => $tee-svn-type
+)
+$tee-svn-type /= svn-type .within numeric-type
+$tee-svn-type /= tagged-numeric-ge
+$tee-svn-type /= tagged-int-range
+$tee-svn-type /= tagged-min-svn
+
+$$measurement-values-map-extension //= (
+  &(tee.tcb-comp-svn: -125) => $tee-tcb-comp-svn-type
+)
+$tee-tcb-comp-svn-type /= [ 16*16 svn-type .within numeric-type ]
+$tee-tcb-comp-svn-type /= [ 16*16 tagged-numeric-ge ]
+$tee-tcb-comp-svn-type /= [ 16*16 tagged-int-range ]
+$tee-tcb-comp-svn-type /= [ 16*16 tagged-min-svn ]
+
+$$measurement-values-map-extension //= (
+  &(tee-tcb-eval-num: -86) => $tee-tcb-eval-num-type
+)
+$tee-tcb-eval-num-type /= uint .within numeric-type
+$tee-tcb-eval-num-type /= tagged-numeric-ge
+$tee-tcb-eval-num-type /= tagged-int-range
+
+$$measurement-values-map-extension //= (
+  &(tee.tcbstatus: -88) => $tee-tcbstatus-type
+)
+$tee-tcbstatus-type /= set-tstr-type
+$tee-tcbstatus-type /= tagged-exp-tstr-member
+$tee-tcbstatus-type /= tagged-exp-tstr-not-member
+
+$$measurement-values-map-extension //= (
+  &(tee.vendor: -70) => $tee-vendor-type
+)
+$tee-vendor-type /= tstr
+
+$$measurement-values-map-extension //= (
+  &(tee.platform-instance-id: -101) => $tee-platform-instance-id-type
+)
+$tee-platform-instance-id-type /= bstr
+

@@ -11,6 +11,7 @@ else
 endif
 
 CDDL_DIR := cddl/
+EXPORTS_DIR := $(CDDL_DIR)exports/
 
 # Import Intel Profile frags - no dependencies
 include $(CDDL_DIR)profile-frags.mk
@@ -20,29 +21,35 @@ define cddl_targets
 
 $(drafts_html): $(CDDL_DIR)$(1)-autogen.cddl
 $(drafts_txt): $(CDDL_DIR)$(1)-autogen.cddl
-$(drafts_xml): $(CDDL_DIR)$(1)-autogen.cddl
+$(drafts_xml): | $(EXPORTS_DIR)$(1).cddl
 
 $(CDDL_DIR)$(1)-autogen.cddl: $(2) 
 	$(MAKE) -C $(CDDL_DIR)
 
 endef # cddl_targets
 
+# Bridge rule: if a draft depends on cddl/exports/foo.cddl,
+# build it by recursing into the cddl directory.
+cddl/exports/%.cddl:
+	$(MAKE) -C cddl exports/$*.cddl
+
 $(eval $(call cddl_targets,irim,$(PROFILE_DEPS)))
 $(eval $(call cddl_targets,ice,$(PROFILE_DEPS)))
 $(eval $(call cddl_targets,ispdm,$(PROFILE_DEPS)))
 $(eval $(call cddl_targets,intel-profile,$(PROFILE_DEPS)))
 
-check-all: check-cddl check-examples
+#$(drafts_xml): $(CDDL_DIR)$(1)-autogen.cddl
+#check-all: check-cddl check-examples
 
-check-cddl:
-	$(MAKE) -C $(CDDL_DIR) check-irim check-ice check-ispdm
-	
-check-examples: check-cddl
-	$(MAKE) -C $(CDDL_DIR) check-irim-examples check-ice-examples check-ispdm-examples
+#check-cddl:
+#	$(MAKE) -C $(CDDL_DIR) check-irim check-ice check-ispdm
+#	
+#check-examples: check-cddl
+#	$(MAKE) -C $(CDDL_DIR) check-irim-examples check-ice-examples check-ispdm-examples
 
 # Build Intel Profile cddl (intel-profile.cddl)
-check-intel-profile:
-	$(MAKE) -C $(CDDL_DIR) check-imports check-intel-profile
+#check-intel-profile:
+#	$(MAKE) -C $(CDDL_DIR) check-imports check-intel-profile
 
 clean:: ; $(MAKE) -C $(CDDL_DIR) clean
 

@@ -74,7 +74,11 @@ check-imports:
 	$(MAKE) -C $(IMPORTS_DIR)
 
 # Make exports
+$(eval $(call cddl_exp_template,irim,$(PROFILE_DEPS),$(EXPORTS_DIR),$(IMPORT_FRAGS)))
+$(eval $(call cddl_exp_template,ice,$(PROFILE_DEPS),$(EXPORTS_DIR),$(IMPORT_FRAGS)))
+$(eval $(call cddl_exp_template,ispdm,$(PROFILE_DEPS),$(EXPORTS_DIR),$(IMPORT_FRAGS)))
 $(eval $(call cddl_exp_template,intel-profile,$(PROFILE_DEPS),$(EXPORTS_DIR),$(IMPORT_FRAGS)))
+
 AUTOGEN_FRAGS := $(addprefix $(CDDL_DIR), $(ICORIM)-autogen.cddl)
 AUTOGEN_FRAGS += $(addprefix $(CDDL_DIR), $(IRIM)-autogen.cddl)
 AUTOGEN_FRAGS += $(addprefix $(CDDL_DIR), $(ICE)-autogen.cddl)
@@ -85,6 +89,12 @@ AUTOGEN_EXPORTS += $(addprefix $(EXPORTS_DIR), $(IRIM)-autogen.cddl)
 AUTOGEN_EXPORTS += $(addprefix $(EXPORTS_DIR), $(ICE)-autogen.cddl)
 AUTOGEN_EXPORTS += $(addprefix $(EXPORTS_DIR), $(ISPDM)-autogen.cddl)
 
+# Individual export rules
+$(EXPORTS_DIR)/%.cddl: $(CDDL_DIR)/%-autogen.cddl
+	mkdir -p $(EXPORTS_DIR)
+	cp $< $@
+
+# Aggregate export target
 export-all: check-$(ICORIM) check-$(IRIM) check-$(ISPDM) check-$(ICE) exp-$(INTEL_PROFILE)
 	cp $(AUTOGEN_FRAGS) $(EXPORTS_DIR)
 CLEANFILES += $(AUTOGEN_EXPORTS)
