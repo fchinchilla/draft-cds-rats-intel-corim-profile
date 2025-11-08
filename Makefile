@@ -1,4 +1,5 @@
 LIBDIR := lib
+export LIBDIR
 include $(LIBDIR)/main.mk
 
 $(LIBDIR)/main.mk:
