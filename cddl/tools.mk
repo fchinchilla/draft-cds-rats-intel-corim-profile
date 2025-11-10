@@ -1,16 +1,20 @@
 # cddl and curl are prerequisite
 # fail hard if they are not found
+$(info Ruby: $(shell ruby -v 2>/dev/null))
+$(info Bundler: $(shell bundler -v 2>/dev/null))
+$(info PATH: $(PATH))
+$(info GEM_HOME: $(GEM_HOME))
+$(info GEM_PATH: $(GEM_PATH))
+$(info cddl path: '$(shell which cddl)')
 
 cddl ?= $(shell command -v cddl)
 ifeq ($(strip $(cddl)),)
-$(error cddl not found. To install cddl: 'gem install cddl')
-gem install cddl
+$(error cddl not found. To install: gem install cddl)
 endif
 
 cddlc ?= $(shell command -v cddlc)
 ifeq ($(strip $(cddlc)),)
 $(error cddlc not found. To install cddlc: 'gem install cddlc')
-gem install cddlc
 endif
 
 curl ?= $(shell command -v curl)

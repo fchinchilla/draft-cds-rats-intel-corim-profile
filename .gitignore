@@ -3,6 +3,7 @@
 *.redxml
 *.swp
 *.txt
+*.bak
 *.upload
 *~
 .tags
@@ -21,10 +22,17 @@ draft-cds-rats-intel-corim-profile.xml
 package-lock.json
 report.xml
 !requirements.txt
+cddl/examples/*.cbor
+cddl/examples/*.pretty
 cddl/*-autogen.cddl
 cddl/imports/ce-import.cddl
 cddl/imports/corim-import.cddl
+cddl/imports/*.cddl.bak
 intel-profile-export.cddl
 *.cddlx
 cddl/ip-export.cddl
 *.cddl.bak
+*.cbor
+*.pretty
+.mailmap
+cddl/imports/corim-autogen.cddl.bak
