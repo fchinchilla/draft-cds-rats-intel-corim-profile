@@ -2,16 +2,16 @@
 
 This is the working area for the individual Internet-Draft, "Intel Profile for CoRIM".
 
-* [Editor's Copy](https://nedmsmith.github.io/draft-cds-rats-intel-corim-profile/#go.draft-cds-rats-intel-corim-profile.html)
+
 * [Datatracker Page](https://datatracker.ietf.org/doc/draft-cds-rats-intel-corim-profile)
 * [Individual Draft](https://datatracker.ietf.org/doc/html/draft-cds-rats-intel-corim-profile)
-* [Compare Editor's Copy to Individual Draft](https://nedmsmith.github.io/draft-cds-rats-intel-corim-profile/#go.draft-cds-rats-intel-corim-profile.diff)
+
 
 
 ## Contributing
 
 See the
-[guidelines for contributions](https://github.com/nedmsmith/draft-cds-rats-intel-corim-profile/blob//CONTRIBUTING.md).
+[guidelines for contributions](https://github.com/fchinchilla/draft-cds-rats-intel-corim-profile/blob/main/CONTRIBUTING.md).
 
 Contributions can be made by creating pull requests.
 The GitHub interface supports creating pull requests using the Edit (✏) button.
